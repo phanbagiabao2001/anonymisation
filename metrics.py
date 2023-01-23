@@ -14,7 +14,7 @@ def age_utility(df,df_anon):
         x = abs(df[col][i]-df_anon[col][i])
         y = np.sqrt(2)*std
         sum += x/y
-    return sum/df.shape[0]
+    return 1-sum/df.shape[0]
 
 # function to compute covaricance of 2 vector
 def cov(a, b):
@@ -38,9 +38,9 @@ def overall_hits_utility(df, df_anon):
     covariance_hist = cov(df.hits, df_anon.hits)
 
     if covariance_overall>0:
-        utility +=0.25*covariance_overall
+        utility +=0.25
     if covariance_hist>0:
-        utility +=0.25*covariance_hist
+        utility +=0.25
 
     correlation_overall = df['overall'].corr(df_anon['overall'])
     correlation_hits = df['hits'].corr(df_anon['hits'])
@@ -77,6 +77,7 @@ def information_loss_nationality(original_data, anonymized_data):
 def main():
     df = pd.read_csv('dataset_origine.csv',sep=";")
     df_anon = pd.read_csv('data_anon.csv')
+    # df_anon = pd.read_csv('dataset_origine.csv',sep=";")
     util1 = age_utility(df,df_anon)
     util2 = overall_hits_utility(df,df_anon)
     util3 = information_loss_nationality(df['nationality'],df_anon['nationality'])
